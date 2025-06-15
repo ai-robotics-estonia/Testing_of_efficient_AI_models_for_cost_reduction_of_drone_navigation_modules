@@ -114,35 +114,42 @@ For smoothing a Butterworth low-pass filter was applied, as implemented in Scipy
 | Magnetometer + smoothing                       |           64.73 |
 | Magnetometer + IMU tilt correction + smoothing |           54.01 |
 
-**Figure 2.** Altitude values for different sensors: barometer, best lidar and GNSS.
 ![Altitude values for different sensors](images/altitude_baro_lidar_gps.png)
 
-**Figure 3.** Effect of IMU tilt correction and smoothing to lidar altitude estimate.
+**Figure 2.** Altitude values for different sensors: barometer, best lidar and GNSS.
+
 ![Effect of IMU tilt correction and smoothing to lidar altitude estimate](images/altitude_lidar_gps.png)
 
-**Figure 4.** Heading error with different methods: raw magnetometer, magnetometer with smoothing and magnetometer with IMU tilt correction and smoothing.
+**Figure 3.** Effect of IMU tilt correction and smoothing to lidar altitude estimate.
+
 ![Heading error with different methods](images/headings_difference.png)
 
-**Figure 5.** Heading error with magnetometer compared to altitude.
+**Figure 4.** Heading error with different methods: raw magnetometer, magnetometer with smoothing and magnetometer with IMU tilt correction and smoothing.
+
 ![Heading error with magnetometer compared to altitude](images/heading_error_vs_GPS_altitude.png)
 
-**Figure 6.** Heading error with magnetometer compared to speed (e.g. motor activity).
+**Figure 5.** Heading error with magnetometer compared to altitude.
+
 ![Heading error with magnetometer compared to speed](images/heading_error_vs_GPS_speed.png)
+
+**Figure 6.** Heading error with magnetometer compared to speed (e.g. motor activity).
 
 #### 2. Relative positioning validation results
 
 The validation results from Spectacular AI and KEF Robotics had not arrived by the time of submitting the report. Early feedback was that the IMU is too noisy to be practically usable, so probably they have to rely on visual odometry only. One possible reason could be that the localization payload was not attached rigidly enough to the drone—just picatinny rail and zip ties. Loose connection can amplify the vibration already in the system. Additionally the IMU values were clipped at 20 m/s² for the z (top-down) axis. We plan to address these problems in future versions of the system.
 
-**Figure 7.** IMU measured accelerations on our prototype (top) and KEF Robotics reference system (bottom).
 ![IMU measured accelerations on our prototype](images/imu_ours.png)
 ![IMU measured accelerations on KEF Robotics reference system](images/imu_kef.png)
+
+**Figure 7.** IMU measured accelerations on our prototype (top) and KEF Robotics reference system (bottom).
 
 #### 3. Absolute positioning initial results
 
 Following results are taken from Gregor Nepste’s master’s thesis *“Absolute positioning of a drone using aerial images”*. In the thesis the template-matching approach was validated on 113 images from the Tartu city orthophoto dataset collected by 3DI. Different pre-trained models were compared and resilience to altitude and heading errors was evaluated.
 
-**Figure 8.** Template matching scheme. The drone camera image is used as a template to match with the base map.
 ![Template matching scheme](images/template_matching.png)
+
+**Figure 8.** Template matching scheme. The drone camera image is used as a template to match with the base map.
 
 *Table 4. Comparison of raw positioning errors with different pre-trained models (113 images).*
 
@@ -211,23 +218,27 @@ Following results are taken from Gregor Nepste’s master’s thesis *“Absolut
 | RTK GNSS only        |    96.27 |      82.49 |    0.00 |  336.92 |      74.87 |
 | Magnetometer + lidar |   110.75 |     100.15 |    0.00 |  366.79 |      83.23 |
 
-**Figure 9.** The heat-map follows the road, as these are all places where the drone image could be.
 ![The heat-map follows the road](images/image_1749822654_139733554_combined_result.png)
 
-**Figure 10.** While drone image is non-discriminative, the heat-map has high scores in the area that possibly matches drone image and low scores where it could never match.
+**Figure 9.** The heat-map follows the road, as these are all places where the drone image could be.
+
 ![Drone image is non-discriminative](images/image_1749822690_141487875_combined_result.png)
+
+**Figure 10.** While drone image is non-discriminative, the heat-map has high scores in the area that possibly matches drone image and low scores where it could never match.
 
 ### Technical Architecture
 
-**Figure 11.** General process of the absolute positioning prototype (from Gregor Nepste’s master’s thesis).
 ![General process of the absolute positioning prototype](images/absolute_positioning_process.png)
+
+**Figure 11.** General process of the absolute positioning prototype (from Gregor Nepste’s master’s thesis).
 
 ### User Interface
 
 There was no special user interface for the product. FoxGlove Studio was used to review the drone footage.
 
-**Figure 12.** FoxGlove Studio view of the drone footage.
 ![FoxGlove Studio view of the drone footage](images/foxglove_studio.png)
+
+**Figure 12.** FoxGlove Studio view of the drone footage.
 
 ### Future Potential of the Technical Solution
 
