@@ -1,0 +1,65 @@
+<?xml version="1.0"?>
+<robot name="sensor_box" xmlns:xacro="http://ros.org/wiki/xacro">
+
+  <!-- Base Link -->
+  <link name="base_link">
+    <visual>
+      <geometry>
+        <box size="0.017 0.020 0.013"/> <!-- Dummy size -->
+      </geometry>
+      <material name="gray">
+        <color rgba="0.5 0.5 0.5 1"/>
+      </material>
+    </visual>
+  </link>
+
+  <!-- IMU -->
+  <link name="imu_link"/>
+  <joint name="imu_joint" type="fixed">
+    <parent link="base_link"/>
+    <child link="imu_link"/>
+    <!-- <origin xyz="0.025 0 0.053" rpy="0 0 0"/> -->
+    <origin xyz="-0.065 0.040 0.033" rpy="0 0 0"/>
+  </joint>
+
+  <!-- Front Camera -->
+  <link name="front_camera_link"/>
+  <joint name="front_camera_joint" type="fixed">
+    <parent link="base_link"/>
+    <child link="front_camera_link"/>
+    <origin xyz="0.07464 0 0.02286" rpy="0 0.07854 0"/>
+  </joint>
+
+  <!-- Front Camera Optical Frame -->
+  <link name="front_camera_optical_frame"/>
+  <joint name="front_camera_optical_joint" type="fixed">
+    <parent link="front_camera_link"/>
+    <child link="front_camera_optical_frame"/>
+    <origin xyz="0 0 0" rpy="-1.5708 0 -1.5708"/>
+  </joint>
+
+  <!-- Bottom Camera -->
+  <link name="bottom_camera_link"/>
+  <joint name="bottom_camera_joint" type="fixed">
+    <parent link="base_link"/>
+    <child link="bottom_camera_link"/>
+    <origin xyz="0.025009 0 0.025" rpy="0 1.5707 0"/>
+  </joint>
+
+  <!-- Front Camera Optical Frame -->
+  <link name="bottom_camera_optical_frame"/>
+  <joint name="bottom_camera_optical_joint" type="fixed">
+    <parent link="bottom_camera_link"/>
+    <child link="bottom_camera_optical_frame"/>
+    <origin xyz="0 0 0" rpy="-1.5708 0 -1.5708"/>
+  </joint>
+
+  <!-- Altimeter (Lidar) -->
+  <link name="altimeter_link"/>
+  <joint name="altimeter_joint" type="fixed">
+    <parent link="base_link"/>
+    <child link="altimeter_link"/>
+    <origin xyz="-0.0249 0.003 -0.02425" rpy="0 1.5707 0"/>
+  </joint>
+
+</robot>
