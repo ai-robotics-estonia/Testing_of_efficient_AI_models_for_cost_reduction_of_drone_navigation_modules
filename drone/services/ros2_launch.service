@@ -1,0 +1,16 @@
+[Unit]
+Description=ROS 2 Launch File on Startup
+After=network-online.target
+
+[Service]
+ExecStartPre=/bin/sleep 30
+ExecStart=/home/rpi5/ros2_jazzy/src/drone/scripts/start_ros2_launch.sh
+Restart=on-failure
+User=rpi5
+Environment=DISPLAY=:0
+Environment=ROS_DOMAIN_ID=0
+StandardOutput=journal
+StandardError=journal
+
+[Install]
+WantedBy=multi-user.target

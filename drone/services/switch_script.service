@@ -1,0 +1,14 @@
+[Unit]
+Description=Python Script to enable switch
+After=network.target
+
+[Service]
+ExecStart=/usr/bin/python3 /home/rpi5/ros2_jazzy/src/drone/scripts/switch_for_record.py
+WorkingDirectory=/home/rpi5
+StandarOutput=inherit
+StandardError=inherit
+Restart=on-failure
+User=rpi5
+
+[Install]
+WantedBy=multi-user.target
