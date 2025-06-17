@@ -1,4 +1,4 @@
-# Efficient AI models for cost reduction of drone navigation modules;
+# Efficient AI models for cost reduction of drone navigation modules
 
 ## Summary
 
@@ -33,7 +33,7 @@ During the project the challenge was narrowed down to the following steps:
 2. Validation of visual-inertial relative positioning algorithms with this sensor set.
 3. Validation of feature-matching absolute positioning algorithms with this sensor set.
 
-Initially we assumed that the hardware part of the localization module is already done and we can focus more on the software side. But the reality was that the hardware was not finished by the time the project started and we had to build the prototype from scratch. That took more time than planned and left less time for software development and experiments. In the end we could not build the full localization system, but just validate that the sensor set is suitable for the planned relative and absolute positioning methods.
+Initially we assumed that the hardware part of the localization module is already done and we can focus more on the software side. But the reality was that the hardware was not finished by the time the project started and we had to build the prototype from scratch. That took more time than planned and left less time for software adjustments and experiments. In the end we could not build the full localization system, but just validate that the sensor set is suitable for the planned relative and absolute positioning methods.
 
 Additionally we decided to not do validation of existing absolute positioning methods in academic literature, as initial review suggested they were too complicated for the cost-effective solution we were aiming for. Instead a novel method using template matching with neural networks was developed as part of Gregor Nepste’s master’s thesis. This method forms the basis for experiments in this project and also future work.
 
@@ -59,7 +59,7 @@ Additionally we decided to not do validation of existing absolute positioning me
 |-|-|-|
 | ![Open box](images/box_open.jpg) | ![Closed box](images/box_closed.jpg) | ![Box attached to drone](images/box_drone.jpg) |
 
-**Figure 1.** Development of the prototype, from left: open box, closed box, box attached to a drone.
+**Figure 1.** Preparing of the prototype, from left: open box, closed box, box attached to a drone.
 
 ### Data Sources
 
