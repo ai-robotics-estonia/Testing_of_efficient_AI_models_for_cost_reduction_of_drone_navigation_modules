@@ -33,10 +33,11 @@
 
 ### Installing ROS2 
 
-To install ROS2 jazzy in Raspberry Pi 5 Bookworm OS, follow through this [installation instructions](https://forums.raspberrypi.com/viewtopic.php?t=361746#p2250865)
-It takes quite some time (few hours) for the installation to complete. Once completed, it misght show show some `stderr`, but it is because of the older setup version.   
+To install ROS2 jazzy in Raspberry Pi 5 Bookworm OS, please follow through this [installation instructions](https://forums.raspberrypi.com/viewtopic.php?t=361746#p2250865).It takes some time (few hours) for the installation to complete.   
 
-Once built, source the installation by runnig the following command from your ros2_ws (`ros_jazzy` in this case):   
+Once completed, it might show show some `stderr`, but it is because of the older setup version.   
+
+When installed, source the installation by runnig the following command from your ros2_ws (`ros_jazzy` in this case):   
 `source install/local_setup.bash`
 
 Or, you can add this command in the end of your `~/.bashrc` so you don't need to do it manually everytime:   
@@ -117,7 +118,7 @@ Also, you might want to change the frame name from `base_link` to `imu_link` in 
 
 And then, build the `mpu6050driver` package again.
 
-Once all these packages and libraries are installed, build the packages:
+Once all these dependencies are installed, build the packages:
 - camera_pkgs
 - custom_msgs
 
@@ -137,16 +138,15 @@ The GPS/RTK device used here is the [Holybro H-RTK mosaic-H (Dual Antenna Headin
 ## Camera Intrinsics
 The camera intrinsics are present inside the config directory of the package. These are not published, because one of the camera is an omni-radtan model (IMX462) which is not supported by the `camera_info` topic.
 
+
 ## Extrinsics
 The sensor extrinsics are published in the topic `/tf_static`. So, it can be extracted from the bag file.
 
 
 ## Starting and stoppping the data recording
 
-To start and stop the data recording, there is a physical switch in the payload box   
-    
+To start and stop the data recording, there is a physical switch in the payload box.   
 ![switch](../images/box_switch.jpg)   
-
 **Figure 1.** Physical ON-OFF switch to start and stop the data recording. 
 
 
