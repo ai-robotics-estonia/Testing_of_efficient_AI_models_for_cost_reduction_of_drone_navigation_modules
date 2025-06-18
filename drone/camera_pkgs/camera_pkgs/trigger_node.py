@@ -273,7 +273,7 @@ class TriggeredCameraNode(Node):
         
         if self.distance is None:
             print("Altimeter distance not retrieved yet")
-            print("------------------------------------")#            
+            print("------------------------------------")        
 
         else:            
             self.counter += 1
@@ -330,9 +330,8 @@ class TriggeredCameraNode(Node):
         if self.dps310.P0 is None:
                 self.dps310.P0 = pressure
         
-        T0, P0 = self.dps310.T0, self.dps310.P0        
-        T0 = T0 + 273   # Converting from celcius to kelvin
-        altitude = 44330 * (1-(pressure/P0) ** (1/5.255)) + 0.3		# including offset of -0.3m
+        P0 = self.dps310.P0
+        altitude = 44330 * (1-(pressure/P0) ** (1/5.255))
 
         barometer_msg = Barometer()        
         barometer_msg.header.stamp = timestamp
