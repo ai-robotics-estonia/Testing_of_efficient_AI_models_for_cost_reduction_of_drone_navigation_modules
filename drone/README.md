@@ -64,7 +64,7 @@ sudo raspi-config
 Then, select the `interfacing options`, and enable these options.
 
 
-## Necessary packages/drivers
+## Necessary packages/drivers - Dependencies
 
 ### Raspberry Pi packages
 - libi2c-dev   
@@ -118,11 +118,14 @@ Also, you might want to change the frame name from `base_link` to `imu_link` in 
 
 And then, build the `mpu6050driver` package again.
 
-Once all these dependencies are installed, build the packages:
-- camera_pkgs
-- custom_msgs
+
+## Installing drone-payload packages
+
+Once all the dependencies mentioned above are installed, build the required packages. To install these packages, please clone the repo inside the src directory of the ros2 workspace. In this case the ros2 workspace is `ros2_jazzy`. Please run the following commands:   
 
 ```
+cd ros2_jazzy/src
+git clone https://github.com/ai-robotics-estonia/Testing_of_efficient_AI_models_for_cost_reduction_of_drone_navigation_modules.git
 colcon build --symlink-install --packages-select camera_pkgs custom_msgs
 source install/local_setup.bash
 ```
