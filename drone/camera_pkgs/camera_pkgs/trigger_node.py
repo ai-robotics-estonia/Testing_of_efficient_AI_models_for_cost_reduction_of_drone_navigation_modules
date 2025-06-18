@@ -1,24 +1,17 @@
 import rclpy
 import rclpy.clock
-import rclpy.logging
 from rclpy.node import Node
-import rclpy.node
 from rclpy.qos import QoSProfile, ReliabilityPolicy, HistoryPolicy
 
-from geometry_msgs.msg import QuaternionStamped
-from std_msgs.msg import Float32
 from sensor_msgs.msg import Image, Imu, Range, MagneticField
-from custom_msgs.msg import Barometer
+from custom_msgs.msg import Barometer, Azimuth
 import ros2_numpy as rnp
 
-import time
 from picamera2 import Picamera2
-import serial
 import smbus2
 from concurrent.futures import ThreadPoolExecutor
 
 import numpy as np
-
 
 # Magnetometer
 class LIS3MDL:
@@ -230,7 +223,7 @@ class TriggeredCameraNode(Node):
         self.lidar_publisher_ = self.create_publisher(Range, 'lidar', qos)
         self.barometer_publisher_ = self.create_publisher(Barometer, 'barometer', qos)
         self.magnetometer_publisher_ = self.create_publisher(MagneticField, 'magnetic_field', qos)
-        self.heading_publisher_ = self.create_publisher(Float32, 'heading', qos)
+        self.heading_publisher_ = self.create_publisher(Azimuth, 'heading', qos)
         
         
         self.dps310 = DPS310()        
@@ -359,6 +352,7 @@ class TriggeredCameraNode(Node):
         raw_mag_x, raw_mag_y, raw_mag_z = self.lis3mdl.read_magnetometer_data()        
         mag_x, mag_y, mag_z = self.lis3mdl.calibrated_magnetic_field(raw_mag_x, raw_mag_y, raw_mag_z)
         
+        ###################################################################################################################################################
 
         magnetometer_msg = MagneticField()
         magnetometer_msg.header.stamp = timestamp
@@ -370,10 +364,22 @@ class TriggeredCameraNode(Node):
 
         self.magnetometer_publisher_.publish(magnetometer_msg)
 
+        ###################################################################################################################################################
+
         heading = -1 * np.arctan2(mag_x, mag_y) * 180 / np.pi   # Converting radians to degrees
-        heading_msg = Float32()
-        heading_msg.data = heading + 10.2   # Adding magnetic declination to get the true north heading
+
+        heading_msg = Azimuth()
+        heading_msg.header.stamp = timestamp
+        heading_msg.header.frame_id = "magnetometer_link"
+
+        heading_msg.azimuth = heading + 10.2    # # Adding magnetic declination (~10.2 in Tartu) to get the true north heading
+        heading_msg.unit = 1
+        heading_msg.orientation = 1
+        heading_msg.reference = 1
+        
         self.heading_publisher_.publish(heading_msg)    
+
+        ###################################################################################################################################################
 
         
 
