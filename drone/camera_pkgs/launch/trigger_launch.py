@@ -21,6 +21,14 @@ def generate_launch_description():
             output='screen',
             parameters=[]
         )
+    
+    magnetic_declination_node = Node(
+            package='camera_pkgs',
+            executable='publish_magnetic_declination',
+            name='publish_magnetic_declination',
+            output='screen',
+            parameters=[]
+        )
 
     trigger_node = Node(
             package='camera_pkgs',
@@ -53,6 +61,7 @@ def generate_launch_description():
         
         box_urdf_publisher,
         distance_node,
+        magnetic_declination_node,
         trigger_node,               
 
     ])
