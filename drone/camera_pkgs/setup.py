@@ -26,7 +26,8 @@ setup(
     entry_points={
         'console_scripts': [
             'trigger_node = camera_pkgs.trigger_node:main',
-            'publish_lidar = camera_pkgs.publish_lidar:main',            
+            'publish_lidar = camera_pkgs.publish_lidar:main',
+            'publish_magnetic_declination = camera_pkgs.publish_magnetic_declination:main',            
         ],
     },
 )
