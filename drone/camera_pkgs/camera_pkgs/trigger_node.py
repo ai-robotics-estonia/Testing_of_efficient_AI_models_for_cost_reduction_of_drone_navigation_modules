@@ -282,7 +282,7 @@ class TriggeredCameraNode(Node):
     def magnetic_declination_callback(self, msg):
         
         if self.magnetic_declination is None:
-            self.magnetic_declination = msg.data       # Assign it just once
+            self.magnetic_declination = msg.data                # Assign it just once
 
 
     def imu_callback(self, msg):
