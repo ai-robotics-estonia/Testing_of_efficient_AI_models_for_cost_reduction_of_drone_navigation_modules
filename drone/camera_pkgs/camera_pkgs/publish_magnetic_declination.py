@@ -22,12 +22,12 @@ class MagneticDeclinationNode(Node):
             GPSFix,
             '/gpsfix',
             self.gps_callback,
-            10
+            1
         )
         self.has_published = False
         
 
-    def gps_callback(self, msg: GPSFix):
+    def gps_callback(self, msg):
         if self.has_published:
             return
 
@@ -40,13 +40,12 @@ class MagneticDeclinationNode(Node):
             "longitude": lon,
             "format": "json"
         }
-
+        
         try:
             response = requests.get(url, params=params, timeout=5)
             response.raise_for_status()
             data = response.json()
             declination = data['geomagnetic-field-model-result']['field-value']['declination']['value']
-            self.get_logger().info(f"Publishing Magnetic Declination at ({lat:.6f}, {lon:.6f}): {declination:.2f}°")
 
             msg_out = Float32()
             msg_out.data = declination
