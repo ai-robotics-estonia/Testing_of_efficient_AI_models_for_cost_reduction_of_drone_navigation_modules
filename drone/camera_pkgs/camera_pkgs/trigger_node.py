@@ -372,9 +372,9 @@ class TriggeredCameraNode(Node):
         heading_msg.header.frame_id = "magnetometer_link"
 
         heading_msg.azimuth = heading + 10.2    # # Adding magnetic declination (~10.2 in Tartu) to get the true north heading
-        heading_msg.unit = 1
-        heading_msg.orientation = 1
-        heading_msg.reference = 1
+        heading_msg.unit = Azimuth.UNIT_DEG
+        heading_msg.orientation = Azimuth.ORIENTATION_NED
+        heading_msg.reference = Azimuth.REFERENCE_GEOGRAPHIC
         
         self.heading_publisher_.publish(heading_msg)    
 
