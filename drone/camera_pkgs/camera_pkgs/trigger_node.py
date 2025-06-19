@@ -3,6 +3,7 @@ import rclpy.clock
 from rclpy.node import Node
 from rclpy.qos import QoSProfile, ReliabilityPolicy, HistoryPolicy
 
+from std_msgs.msg import Float32
 from sensor_msgs.msg import Image, Imu, Range, MagneticField
 from custom_msgs.msg import Barometer, Azimuth
 import ros2_numpy as rnp
@@ -12,6 +13,7 @@ import smbus2
 from concurrent.futures import ThreadPoolExecutor
 
 import numpy as np
+import requests
 
 # Magnetometer
 class LIS3MDL:
@@ -229,6 +231,8 @@ class TriggeredCameraNode(Node):
         self.dps310 = DPS310()        
         self.lis3mdl = LIS3MDL()
 
+        self.magnetic_declination = None
+
         ################################################## Initialize cameras ##################################################
 
         self.cam_front = Picamera2(camera_num=0)
@@ -263,30 +267,47 @@ class TriggeredCameraNode(Node):
             '/distance',
             self.distance_callback,
             1)
+        
+        self.magnetic_declination_subscription = self.create_subscription(
+            Float32,
+            '/magnetic_declination',
+            self.magnetic_declination_callback,
+            1)
     
     
     def distance_callback(self, msg):        
-        self.distance = msg.data       
+        self.distance = msg.data
+
+
+    def magnetic_declination_callback(self, msg):
+        
+        if self.magnetic_declination is None:
+            self.magnetic_declination = msg.data       # Assign it just once
 
 
     def imu_callback(self, msg):
         
-        if self.distance is None:
+        if self.distance is None :
             print("Altimeter distance not retrieved yet")
             print("------------------------------------")        
+            return
 
-        else:            
-            self.counter += 1
-            if self.counter >= 6:                
-                
-                # Submit tasks to executor                
-                self.thread_pool.submit(self.magnetometer_capture_and_publish)
-                self.thread_pool.submit(self.cam_capture_and_publish, "front", self.cam_front, self.cam_front_publisher_)
-                self.thread_pool.submit(self.cam_capture_and_publish, "bottom", self.cam_bottom, self.cam_bottom_publisher_)                                
-                self.thread_pool.submit(self.lidar_capture_and_publish)                
-                self.thread_pool.submit(self.barometer_capture_and_publish, self.dps310.L, self.dps310.R, self.dps310.M, self.dps310.g)                               
-                
-                self.counter = 0
+        if self.magnetic_declination is None:
+            print("Magnetic declination not retrieved yet")
+            print("------------------------------------")        
+            return
+        
+        self.counter += 1
+        if self.counter >= 6:                
+            
+            # Submit tasks to executor                
+            self.thread_pool.submit(self.magnetometer_capture_and_publish)
+            self.thread_pool.submit(self.cam_capture_and_publish, "front", self.cam_front, self.cam_front_publisher_)
+            self.thread_pool.submit(self.cam_capture_and_publish, "bottom", self.cam_bottom, self.cam_bottom_publisher_)                                
+            self.thread_pool.submit(self.lidar_capture_and_publish)                
+            self.thread_pool.submit(self.barometer_capture_and_publish, self.dps310.L, self.dps310.R, self.dps310.M, self.dps310.g)                               
+            
+            self.counter = 0
                 
 
     def cam_capture_and_publish(self, cam_direction, cam, publisher_):
@@ -371,7 +392,7 @@ class TriggeredCameraNode(Node):
         heading_msg.header.stamp = timestamp
         heading_msg.header.frame_id = "magnetometer_link"
 
-        heading_msg.azimuth = heading + 10.2    # # Adding magnetic declination (~10.2 in Tartu) to get the true north heading
+        heading_msg.azimuth = heading + self.magnetic_declination    # # Adding magnetic declination (~10.2 in Tartu) to get the true north heading
         heading_msg.unit = Azimuth.UNIT_DEG
         heading_msg.orientation = Azimuth.ORIENTATION_NED
         heading_msg.reference = Azimuth.REFERENCE_GEOGRAPHIC
@@ -379,8 +400,7 @@ class TriggeredCameraNode(Node):
         self.heading_publisher_.publish(heading_msg)    
 
         ###################################################################################################################################################
-
-        
+       
 
     def run(self):
         rclpy.spin(self)
