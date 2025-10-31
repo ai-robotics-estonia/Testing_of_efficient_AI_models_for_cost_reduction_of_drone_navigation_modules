@@ -1,4 +1,4 @@
-# Testing og efficient AI models for cost reduction of drone navigation modules
+# Testing of efficient AI models for cost reduction of drone navigation modules
 
 ## Summary
 
